@@ -7,7 +7,7 @@
 	I ejected the Virtual CD with the ISO and re mounted it. Its also a common issue when secure boot is activated when trying to install
 	an operating system. Toggled off and the installation works. 
 
-###After changing the Administrator password ill set a static IP address. First Ill check the current IP with
+### After changing the Administrator password ill set a static IP address. First Ill check the current IP with
 	
 	Get-NetIPAddress 
 
