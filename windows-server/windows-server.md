@@ -1,11 +1,11 @@
 # Initial VM set up and Windows server configurations
 
-First lets download windows server .iso
+	First lets download windows server .iso
 
-In hyperV I have created a new virtual machine, giving it 4gb RAM and 40GB drive storage. Upon turning it on a and connecting, im 
-told the boot loader has failed, no boot image was found on the network adaper and the boot loader didnt install an operating system.
-I ejected the Virtual CD with the ISO and re mounted it. Its also a common issue when secure boot is activated when trying to install
-an operating system. Toggled off and the installation works. 
+	In hyperV I have created a new virtual machine, giving it 4gb RAM and 40GB drive storage. Upon turning it on a and connecting, im 
+	told the boot loader has failed, no boot image was found on the network adaper and the boot loader didnt install an operating system.
+	I ejected the Virtual CD with the ISO and re mounted it. Its also a common issue when secure boot is activated when trying to install
+	an operating system. Toggled off and the installation works. 
 
 ###After changing the Administrator password ill set a static IP address. First Ill check the current IP with
 	
@@ -13,10 +13,10 @@ an operating system. Toggled off and the installation works.
 
 ### Im given a lot of information however scrolling through I find the relevant info. 
 
-IPAddress         : 192.168.1.xxx      #Current IP 
-InterfaceAlias    : Ethernet		   #Netowrk adaptor name
-PrefixLength      : 24				   #24 bit subnet mask (255.255.255.0)
-PrefixOrigin      : Dhcp			   #Confirms dynamicallty assigned 
+	IPAddress         : 192.168.1.xxx      #Current IP 
+	InterfaceAlias    : Ethernet		   #Netowrk adaptor name
+	PrefixLength      : 24				   #24 bit subnet mask (255.255.255.0)
+	PrefixOrigin      : Dhcp			   #Confirms dynamicallty assigned 
 
 ### Ill now begin to configure this using the info gathered using: 
 
@@ -40,33 +40,33 @@ PrefixOrigin      : Dhcp			   #Confirms dynamicallty assigned
 
 ### Im now shown this information
 
-IPAddress         : 192.168.1.xxx
-InterfaceIndex    : 6
-InterfaceAlias    : Ethernet
-AddressFamily     : IPv4
-Type              : Unicast
-PrefixLength      : 24
-PrefixOrigin      : Manual
-SuffixOrigin      : Manual
-AddressState      : Tentative
-ValidLifetime     :
-PreferredLifetime :
-SkipAsSource      : False
-PolicyStore       : ActiveStore
+	IPAddress         : 192.168.1.xxx
+	InterfaceIndex    : 6 
+	InterfaceAlias    : Ethernet 
+	AddressFamily     : IPv4
+	Type              : Unicast 
+	PrefixLength      : 24
+	PrefixOrigin      : Manual
+	SuffixOrigin      : Manual 
+	AddressState      : Tentative
+	ValidLifetime     :
+	PreferredLifetime :
+	SkipAsSource      : False
+	PolicyStore       : ActiveStore
 
-IPAddress         : 192.168.1.xxx
-InterfaceIndex    : 6
-InterfaceAlias    : Ethernet
-AddressFamily     : IPv4
-Type              : Unicast
-PrefixLength      : 24
-PrefixOrigin      : Manual
-SuffixOrigin      : Manual
-AddressState      : Invalid
-ValidLifetime     :
-PreferredLifetime :
-SkipAsSource      : False
-PolicyStore       : PersistentStore
+	IPAddress         : 192.168.1.xxx
+	InterfaceIndex    : 6
+	InterfaceAlias    : Ethernet
+	AddressFamily     : IPv4
+	Type              : Unicast
+	PrefixLength      : 24
+	PrefixOrigin      : Manual
+	SuffixOrigin      : Manual
+	AddressState      : Invalid
+	ValidLifetime     :
+	PreferredLifetime :
+	SkipAsSource      : False
+	PolicyStore       : PersistentStore
 	
 ### This shows windows in a state of transferring my IP settings from the previous to the new. To check this has all worked ill wait and then check the configuraiton again. 
 
@@ -78,11 +78,11 @@ PolicyStore       : PersistentStore
 
 ### Verifcation
 	
-IPAddress    : 192.168.1.xxx
-PrefixOrigin : Manual  			# Shows IP is statically asssigned
-SuffixOrigin : Manual  
-AddressState : Preferred		# and activley in use
-PolicyStore  : ActiveStore
+	IPAddress    : 192.168.1.xxx
+	PrefixOrigin : Manual  			# Shows IP is statically asssigned
+	SuffixOrigin : Manual  
+	AddressState : Preferred		# and activley in use
+	PolicyStore  : ActiveStore
 
 ### After confirming the static IP has been set its now time to check the default gateway. Ill use these commands.
 
@@ -98,9 +98,9 @@ PolicyStore  : ActiveStore
 	
 ### Output
 
-DestinationPrefix NextHop       RouteMetric
------------------ -------       -----------
-0.0.0.0/0         192.168.1.xxx         256
+	DestinationPrefix NextHop       RouteMetric
+	----------------- -------       -----------
+	0.0.0.0/0         192.168.1.xxx         256
 
 ### This confirms the default gateway has been set.
 
@@ -129,9 +129,9 @@ DestinationPrefix NextHop       RouteMetric
 
 ### Confrim	
 
-Status   Name               DisplayName
-------   ----               -----------
-Running  TermService        Remote Desktop Services
+	Status   Name               DisplayName
+	------   ----               -----------
+	Running  TermService        Remote Desktop Services
 
 ### Then ill Check which RDP firewall rules are currently active
 
@@ -147,11 +147,11 @@ Running  TermService        Remote Desktop Services
 	
 ### Output 
 
-DisplayName                         Enabled Direction Action
------------                         ------- --------- ------
-Remote Desktop - Shadow (TCP-In)       True   Inbound  Allow
-Remote Desktop - User Mode (TCP-In)    True   Inbound  Allow
-Remote Desktop - User Mode (UDP-In)    True   Inbound  Allow
+	DisplayName                         Enabled Direction Action
+	-----------                         ------- --------- ------
+	Remote Desktop - Shadow (TCP-In)       True   Inbound  Allow
+	Remote Desktop - User Mode (TCP-In)    True   Inbound  Allow
+	Remote Desktop - User Mode (UDP-In)    True   Inbound  Allow
 
 ### Now would be a good time to check for any updates before going on to install AD
 
@@ -171,10 +171,10 @@ Remote Desktop - User Mode (UDP-In)    True   Inbound  Allow
 	
 ### Verifcation
 
-Success Restart Needed Exit Code      Feature Result
-------- -------------- ---------      --------------
-True    No             Success        {Active Directory Domain Services, Group P...
-
+	Success Restart Needed Exit Code      Feature Result
+	------- -------------- ---------      --------------
+	True    No             Success        {Active Directory Domain Services, Group P...
+	
 ### Now ADDS is installed we need to make the server a Domain Controller, which will automatically create the domain we choose.
 
 	Install-ADDSForest     			# Forest is the top level container for everything in AD
@@ -185,23 +185,23 @@ True    No             Success        {Active Directory Domain Services, Group P
 
 ### Now it has rebooted it asks for username and password. The windows server  has been promoted to a fully functional Domain Controller for the greg.local domain!
 
-  ================================================================================
-                 Welcome to Windows Server 2025 Standard Evaluation
-  ================================================================================
+	================================================================================
+					Welcome to Windows Server 2025 Standard Evaluation
+	================================================================================
 
-    1)  Domain/workgroup:                   Domain: greg.local
-    2)  Computer name:                      DC01
-    3)  Add local administrator
-    4)  Remote management:                  Enabled
+		1)  Domain/workgroup:                   Domain: greg.local
+		2)  Computer name:                      DC01
+		3)  Add local administrator
+		4)  Remote management:                  Enabled
 
-    5)  Update setting:                     Download only
-    6)  Install updates
-    7)  Remote desktop:                     Enabled (more secure clients)
+		5)  Update setting:                     Download only
+		6)  Install updates
+		7)  Remote desktop:                     Enabled (more secure clients)
 
-    8)  Network settings
-    9)  Date and time
-    10) Diagnostic data setting:            Required
-	
+		8)  Network settings
+		9)  Date and time
+		10) Diagnostic data setting:            Required
+		
 	
 ### We can also check this with the commands
 
