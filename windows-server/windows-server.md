@@ -32,7 +32,7 @@
 
 	-DefaultGateway #Router IP for internet
 	
-###(Ill need to check my home network settings to find the DefaultGateway.)
+### (Ill need to check my home network settings to find the DefaultGateway.)
 
 ### So my whole command is 
 	
