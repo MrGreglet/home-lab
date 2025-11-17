@@ -12,7 +12,7 @@ to add system wide tools, and begin tinkering with containerisation with docker 
 - [X] Create Active Directory Domain
 - [X] Set up Organizational Units
 - [X] Create Security Groups
-- [ ] Create User Accounts
+- [X] Create User Accounts
 - [ ] Configure group memberships
 - [ ] Implement Group Policiy Objects (GPO)
 - [ ] Implement Basic Security Hardening
