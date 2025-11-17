@@ -13,7 +13,7 @@ to add system wide tools, and begin tinkering with containerisation with docker 
 - [X] Set up Organizational Units
 - [X] Create Security Groups
 - [X] Create User Accounts
-- [ ] Configure group memberships
+- [X] Configure group memberships
 - [ ] Implement Group Policiy Objects (GPO)
 - [ ] Implement Basic Security Hardening
 
