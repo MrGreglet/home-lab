@@ -103,7 +103,7 @@
 	
 	Set-ADDefaultDomainPasswordPolicy -Identity greg.local 
     -LockoutThreshold 5 									# Lock after 5 failed attempts
-    -MinPasswordLength 8									# 8 character minimum
+    -MinPasswordLength 12									# 12 character minimum
     -LockoutDuration "00:30:00" 							# 30 minute lockout
     -LockoutObservationWindow "00:30:00" 					# 30 minute observation window
     -MaxPasswordAge "30.00:00:00" 							# 30 day password expiry
@@ -126,7 +126,7 @@
 	PasswordHistoryCount        : 24
 	ReversibleEncryptionEnabled : False
 
-### This confirms the settings change took place! Nowe to check the comain controllers group policiy, I already knwo from earlier it exists and is enabled
+### This confirms the settings change took place! Nowe to check the domain controllers group policiy, I already knwo from earlier it exists and is enabled
 
 ### but now I need to know where its applied and what settings it controls.
 
@@ -194,6 +194,24 @@
 	-Type DWord 
 	-Value 1  # 1 = TRUE (restrict access)
 
+### I forgot to add forced logoff settings, will force logoff when logon hours expire (prevents indefinitye access with expired accounts) then verification
+
+	Set-GPRegistryValue "Workstation Security Policy" 
+	-Key "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" 
+	-ValueName "ForceLogoffWhenHourExpire" # Forces logoff when account expires or outside permitted hours
+	-Type DWord -Value 1 
+	
+	KeyPath     : SYSTEM\CurrentControlSet\Services\Netlogon\Parameters
+	FullKeyPath : HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters
+	Hive        : LocalMachine
+	PolicyState : Set
+	Value       : 1
+	Type        : DWord
+	ValueName   : ForceLogoffWhenHourExpire
+	HasValue    : True
+
+### Now my windows server will automaticall logoff when user accounts expire, prevent indefinite access with expired credentials and enforces account lifecycle management. I could also later configure permitted hours to automatically log users off but ill do this later.
+
 ## Now lets check these settings have been implemented;
 
 ### First lets confirm what screensaver/ timeout setting have been configured:
@@ -247,8 +265,6 @@
 ### They will be as follows; User Restriction, Server Hardening, and IT Admin policies.
 
 ## User restrictions Policy. This will control what regular users can and cannot do on their own workstations to prevent accidental system changes and improve security.
-
-
 
 	New-GPO -Name "User Restrictions Policy" # Create a new GPO
 	
@@ -732,6 +748,44 @@
 	Inherited   : False
 	
 ### Great success! We were just missing one parameter.  The architecture for secure RDP is now complete!
+
+
+### I forgot to add specific department policies. Ill configure one now to demonstrate, and possibly come back to this later to expand.
+
+### First ill need to make the OU's, Sales, HR, and Finance. These will go under the employees OU. Ill add the updated structre to AD-OU-Structure at the bottom.
+
+	New-ADOrganizationalUnit -Name "Sales" -Path "OU=Employees,OU=User Accounts,DC=greg,DC=local"
+	New-ADOrganizationalUnit -Name "HR" -Path "OU=Employees,OU=User Accounts,DC=greg,DC=local"  
+	New-ADOrganizationalUnit -Name "Finance" -Path "OU=Employees,OU=User Accounts,DC=greg,DC=local"
+
+### Then ill create the GPO and link it
+
+	New-GPO -Name "Sales Department Policy"
+	
+	New-GPLink -Name "Sales Department Policy" 
+	-Target "OU=Sales,OU=Employees,OU=User Accounts,DC=greg,DC=local"
+
+### Now I can add the department specific policy, which will set the screensaver timeout to 20 minutes. 
+
+	Set-GPRegistryValue "Sales Department Policy" 
+	-Key "HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Control Panel\Desktop" 
+	-ValueName "ScreenSaveTimeOut" 
+	-Type String 
+	-Value "1200"
+	
+### So now we have a Workstation Security Policy to set the screensave timeout for 900 seconds that applies to all computers, and then we have the Sales Department policiy screensaver timeout set to 1200 seconds. These are conflicting GPO's. By default, user policies override computer policies for user specific settings like screensaver timeouts. 
+
+### Now sales should get 20 mins, while everyone else gets 15 mins screensaver timeout. Lets check that with this inheritence command
+
+	Get-GPInheritance # Shows how group policies flow down through the OU structure.
+	-Target "OU=Sales,OU=Employees,OU=User Accounts,DC=greg,DC=local" # Targets the Sales OU and see what policies apply there
+	
+	Name                  : sales
+	ContainerType         : OU
+	Path                  : ou=sales,ou=employees,ou=user accounts,dc=greg,dc=local
+	GpoInheritanceBlocked : No # Means policies can flow down from parent OU's, if this said yes, Sales OU would ony get its own policies.
+	GpoLinks              : {Sales Department Policy} # What policies are attatched to this OU
+	InheritedGpoLinks     : {Sales Department Policy, User Restrictions Policy, IT Admin Policy, Default Domain Policy} # All the policies that apply here
 
 ### Conclusion
 
