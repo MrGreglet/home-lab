@@ -13,7 +13,7 @@ Where I begin to get particularly excited is integrating Linux infrastructure - 
 - [X] Create Security Groups
 - [X] Create User Accounts
 - [X] Configure group memberships
-- [ ] Implement Group Policiy Objects (GPO)
+- [X] Implement Group Policiy Objects (GPO)
 - [ ] Implement Basic Security Hardening
 
 ### Phase 2: Ubuntu Server and Network Integration
@@ -37,4 +37,4 @@ Where I begin to get particularly excited is integrating Linux infrastructure - 
 ## Progress Tracking
 - Start Date: 16/11/2025
 - Current Phase: Phase 1 - Windows Server Foundation
-- Last Updated:
+- Last Updated: 17/11/2025
