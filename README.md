@@ -1,9 +1,8 @@
 # My HomeLabJourney
 
-This project will document my journey building a complete virtual home lab from scratch. I'm starting with Windows Server and 
-Active Directory (soley because as a beginner to the professial world of information technology it seems as if this is my only 
-path into relevant employment). Then where I begin to get a bit more excited is integrating a linux server. Ill use ubuntu server
-to add system wide tools, and begin tinkering with containerisation with docker and scaling with kubenetes.
+This project will document my journey building a complete virtual home lab from scratch. I'm starting with Windows Server and Active Directory (primarily because as someone entering the professional world of information technology, these core enterprise technologies provide a solid foundation for relevant employment). The lab is being built exclusively via command-line interface to develop deep technical proficiency.
+
+Where I begin to get particularly excited is integrating Linux infrastructure - using Ubuntu Server to add system-wide tools, and exploring containerization with Docker and orchestration with Kubernetes.
 
 ## My Learning Goals
 
