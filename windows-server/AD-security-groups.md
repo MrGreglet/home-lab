@@ -36,7 +36,6 @@
 ### Ive just learnt about hastable arrays. Ill implement that here with the first Security Group - Administrative
 
 		@(
-		#This is the open part of the command to create an array of hashtables, each group with a name AND Description
 		@{Name="IT-Admins"; Description="IT administrators with full domain access"},
 		@{Name="Help-Desk"; Description="Help desk staff with limited administrative access"},
 		@{Name="Network-Admins"; Description="Network infrastructure administrators"}
