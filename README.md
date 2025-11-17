@@ -8,10 +8,13 @@ to add system wide tools, and begin tinkering with containerisation with docker 
 ## My Learning Goals
 
 ### Phase 1: Windows Server Foundation
-- [ ] Build Windows Server VM
-- [ ] Create Active Directory Domain
-- [ ] Set up Organizational Units and Security Groups
-- [ ] Configure User Management and Policies
+- [X] Build Windows Server VM
+- [X] Create Active Directory Domain
+- [X] Set up Organizational Units
+- [X] Create Security Groups
+- [ ] Create User Accounts
+- [ ] Configure group memberships
+- [ ] Implement Group Policiy Objects (GPO)
 - [ ] Implement Basic Security Hardening
 
 ### Phase 2: Ubuntu Server and Network Integration
