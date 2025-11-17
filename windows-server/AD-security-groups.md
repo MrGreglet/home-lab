@@ -13,19 +13,19 @@
 
 ### Planned Security groups:
 
-	- Administrative OU/
+	- Administrative /
 		
 		- IT Admins
 		- Help-Desk
 		- Network Admins
 	
-	- Department OU/
+	- Department /
 		
 		- IT Staff
 		- Sales Team
 		- HR Team
 		
-	- Resource OU/
+	- Resource /
 		
 		- Filer server access
 		- Printer servers
@@ -33,7 +33,7 @@
 		
 ### Ill do this with very similar commands to how I did the basic OUs, this time adding extrra parameters for security based roles and permissions
 
-### Ive just learnt about hastable arrays. Ill implement that here.
+### Ive just learnt about hastable arrays. Ill implement that here with the first Security Group - Administrative
 
 		@(
 		#This is the open part of the command to create an array of hashtables, each group with a name AND Description
@@ -48,18 +48,20 @@
 			-GroupCategory Security 
 			-Description $_.Description
 	}
-		
-		
+### Let me break this down a bit clearer. Each item in the hashtable array defines the properties for one security group, then we pipe that list into a loop that processes them one by one. For each group in the list, we create a new AD group, using the $_. notation to pull out the values we defined earlier for that specific group.
+
 ### Understanding GroupScope and GroupCategory
 
-	**GroupScope = Permission Reach**
-	- `DomainLocal`: Can only assign permissions within this domain
-	- `Global`: Can be used across the entire Active Directory forest (our choice)
-	- `Universal`: Can be used across multiple forests (advanced)
+	GroupScope = Permission Reach, there are three options
+	
+		- 'DomainLocal': Can only assign permissions within this domain
+		- `Global`: Can be used across the entire Active Directory forest (our choice)
+		- `Universal`: Can be used across multiple forests (advanced)
 
-	**GroupCategory = Group Purpose**  
-	- `Security`: Used for assigning permissions and access rights (our choice)
-	- `Distribution`: Used only for email distribution lists
+	GroupCategory = Group Purpose, only two options
+
+		- `Security`: Used for assigning permissions and access rights (our choice)
+		- `Distribution`: Used only for email distribution lists
 
 	We use `Global` scope so admin groups can manage multiple domains, and `Security` category to actually grant permissions.
 
