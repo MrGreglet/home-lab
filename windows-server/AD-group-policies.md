@@ -303,11 +303,11 @@
 	ValueName   : DisableCMD # Disable command prompt
 	HasValue    : True 		
 	
-### User Restrictions Policy - COMPLETE. With user workstation controls in place, I'll now implement server-specific security through a Server Hardening Policy.
+# User Restrictions Policy - COMPLETE. With user workstation controls in place, I'll now implement server-specific security through a Server Hardening Policy.
 	
-### This will add extra security measures specifically to servers. Since they host critical servers and data, they need stronger protection than regular workstations.
+# This will add extra security measures specifically to servers. Since they host critical servers and data, they need stronger protection than regular workstations.
 
-## Ill implement:
+### Ill implement:
 
 	 - Larger event logs - servers need more logging capacity for security monitoring
 	 - Enhanced auditing - Better tracking of who does what on servers
@@ -398,6 +398,168 @@
 	HasValue    : True
 
 ### That confirms the max file size change for the logs!
+
+# Next up is enhanced auditing. 
+
+	This is so I can track who does what on my servers. Default auditing is basic, we need detailed tracking of:
+		
+		- User logons/logoffs
+		- File access attempts
+		- Privilage use 
+		- Policy changes
+		- Account management
+	
+	Windows has these main audit categories:
+		
+		- Account Logon (When users authenticate to this server)
+		- Logon/Logoff (When users access resources on this server)
+		- Object Access (File/Folder Access)
+		- Privilage use (When users use special rights)
+		- Policy Change (When security policiesare modified
+		- Account management (When user accounts are created/changed)
+
+	Planning the audit settings	
+		
+		- Success and failure for critical events
+		- More detailed tracking than workstations 
+		- Focus on security related	activities
+
+# User logons/offs
+		
+### Enabling account logon auditing. This tracks authentication attempts to the server.
+
+	auditpol         					 # Windows audit policiy tool 
+	/set 								 # Changing a setting 
+	/subcategory:"Credential Validation" # Tracks when users prove their identity 
+	/success:enable 					 # Log successful attempts 
+	/failure:enable 					 # Log failed attempts
+
+### Im then told by windows the command was successfully executed, but lets check with the command:
+	
+	auditpol 
+	/get								 # Getting a setting
+	/subcategory:"Credential Validation"
+
+	System audit policy
+	Category/Subcategory                      Setting
+	Account Logon
+		Credential Validation                   Success and Failure
+			
+### Now we have confirmed this, ill add the next layer - tracking user sessions on the Server (log ons). Then the test result to confirm.
+	
+	auditpol 
+	/set 
+	/subcategory:"Logon"  # Tracks when user sessions start on this server
+	/success:enable 
+	/failure:enable
+
+	System audit policy
+	Category/Subcategory                      Setting
+	Logon/Logoff
+		Logon                                   Success and Failure
+		
+### Successfully comfirmed, now ill start tracking when user sessions end on the server (log offs). Then ill test to confirm
+
+	auditpol 
+	/set 
+	/subcategory:"Logoff" 		# Tracks when users logoff 
+	/success:enable   			# Note that there is in failure:enable, becuase logoff cant fail
+
+	System audit policy
+	Category/Subcategory                      Setting
+	Logon/Logoff
+	  Logoff                                  Success
+
+### Now ill begin tracking when accounts get locked out due to failed login attempts
+
+	auditpol 
+	/set 
+	/subcategory:"Account Lockout" # Tracks when accounts are automatically locked
+	/success:enable
+	
+	System audit policy 
+	Category/Subcategory                      Setting
+	Logon/Logoff
+	  Account Lockout                         Success
+
+## This is confirmed as configured and is important in security as it will alert to potential brute force attacks, shows which accounts are being targeted and is essential for security incedent response
+
+# Now we will work on policy change auditing. This tracks when security policies are modified.
+
+	auditpol 
+	/set 
+	/subcategory:"Policy Change" # Tracks modifications to security policies 
+	/success:enable 
+	/failure:enable
+
+### Okay my guess for policy change was wrong, and after checking the for the correct subcategory name I discovered it is "Audit Policy Change" not simply "Policy Change"
+
+	auditpol
+	/set 
+	/subcategory:"Audit Policy Change"  # Correct subcategory adjustment
+	/success:enable 
+	/failure:enable
+
+### Then check:
+	
+	System audit policy
+	Category/Subcategory                      Setting
+	Policy Change
+	  Audit Policy Change                     Success and Failure
+	  
+### So now we have completed logon/off and policy change auditing, time to move onto account management auditing. 
+
+# Lets enable account management auditing, This tracks when user accounts are created, changed, or deleted.
+	
+	auditpol 
+	/set 
+	/subcategory:"User Account Management"  # Subcategory for user acct management
+	/success:enable  # Who managed what user when
+	/failure:enable	 # Who failed to manage what user when
+
+### Then test
+
+	System audit policy
+	Category/Subcategory                      Setting
+	Account Management
+	  User Account Management                 Success and Failure
+	  
+### User account managment auditing successfully set up.
+
+# Now for File System auditing, which tracks every access attempt to files and folders wether successful or not. There are two steps to this, To enable the audit policy and then to configure specific files/folders we want to target.
+
+## Enable File System auditing and verify:
+
+	auditpol 
+	/set 
+	/subcategory:"File System" # subcategory that controls file/folder access tracking
+	/success:enable 
+	/failure:enable
+	
+	System audit policy
+	Category/Subcategory                      Setting
+	Object Access
+	  File System                             Success and Failure
+	  
+### Now we have file system auditing set up thats great, but its not going to do anything until I point it at the files/folders I want to audit. I am doing this in CLI only and from what im reading and hearing from people is that this is usually very complex in CLI and fer my level would be better to use GUI. Ill configure this later.
+
+###  The last and final audit configuration I will do will be Privilage Use auditing. This tracks when users excersise special administrative rights such as changing the sytem time, backing up/restoring files, shutting down/ rebooting the system, loading device drivers etc
+
+### First lets enable then check 
+	
+	auditpol 
+	/set 
+	/subcategory:"Sensitive Privilege Use"  # Tracks powerful admin rights usage
+	/success:enable 
+	/failure:enable
+
+	System audit policy
+	Category/Subcategory                      Setting
+	Privilege Use
+	  Sensitive Privilege Use                 Success and Failure
+	  
+
+
 
 ### Now workstation and server security are established,  Ill create the final policy for IT administrative access:
 
