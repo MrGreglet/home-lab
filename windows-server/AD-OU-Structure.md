@@ -6,10 +6,10 @@
 
 ### OU Deisgn Principles:
 
-	- **Security Boundaries**: Seperate administrative permissions
-	- **Delegation**: Different IT reas to manage different OU'security
-	- **Group Policy**: Apply settings to logical groups
-	- **Scalability**: Easy to expand as the organisation grows
+	- Security Boundaries: Seperate administrative permissions
+	- Delegation: Different IT reas to manage different OU'security
+	- Group Policy: Apply settings to logical groups
+	- Scalability: Easy to expand as the organisation grows
 	
 ### Proposed OU Structure:	
 
@@ -109,4 +109,4 @@
 	Resource           OU=Resource,OU=Security Groups,DC=greg,DC=local
 
 
-## This concludes me setting up the AD OU Structure!!
+## This concludes me setting up the AD OU Structure!! 	 

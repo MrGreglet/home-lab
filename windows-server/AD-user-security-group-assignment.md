@@ -180,6 +180,7 @@
 ### So the command was successfull! 
 
 ### Now to finish this phase, we just need to assign svc-backup to file server access group.
+
 ### Will possibly come to adding another group "Monitoring -Read only" or somthing later.
  
 	Add-ADGroupMember -Identity "File-Server-Access" -Members "svc-backup"
@@ -207,7 +208,7 @@
 	svc-backup     Domain Users
 	svc-monitoring Domain Users
 	
-## Verification Results ✅
+## Verification Results 
 
 	All regular employees now have correct group assignments:
 
