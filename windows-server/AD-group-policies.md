@@ -11,7 +11,7 @@
 	- Control user desktop envrironments
 	- Set password account policies
 	
-### My GPO strrategy:
+### My GPO strategy:
 
 	1. Check what already exists - )See default policies)
 	2. Create basic security policies - Password rules, Lockout settings etc
