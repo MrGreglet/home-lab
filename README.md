@@ -14,7 +14,7 @@ Where I begin to get particularly excited is integrating Linux infrastructure - 
 - [X] Create User Accounts
 - [X] Configure group memberships
 - [X] Implement Group Policiy Objects (GPO)
-- [ ] Implement Basic Security Hardening
+- [X] Implement Basic Security Hardening
 
 ### Phase 2: Ubuntu Server and Network Integration
 - [ ] Build Ubuntu Server VM
