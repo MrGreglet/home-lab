@@ -37,4 +37,4 @@ Where I begin to get particularly excited is integrating Linux infrastructure - 
 ## Progress Tracking
 - Start Date: 16/11/2025
 - Current Phase: Phase 1 - Windows Server Foundation
-- Last Updated: 17/11/2025
+- Last Updated: 18/11/2025
